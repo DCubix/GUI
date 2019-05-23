@@ -178,12 +178,14 @@ void GUI::load(const std::string& xmlData) {
 }
 
 Image* GUI::createImage(int width, int height) {
-	m_images.push_back(std::make_unique<Image>(*m_renderer.get(), width, height));
+	m_images.push_back(std::make_unique<Image>());
+	m_images.back()->load(*m_renderer.get(), PixelData(width, height));
 	return m_images.back().get();
 }
 
 Image* GUI::createImage(const std::string& fileName) {
-	m_images.push_back(std::make_unique<Image>(*m_renderer.get(), fileName));
+	m_images.push_back(std::make_unique<Image>());
+	m_images.back()->load(*m_renderer.get(), PixelData(fileName));
 	return m_images.back().get();
 }
 
