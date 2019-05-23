@@ -48,6 +48,15 @@ public:
 	void begin(int w, int h);
 	void end();
 
+	void image(
+		int image,
+		int x, int y, int w, int h,
+		int sx, int sy, int sw, int sh,
+		int r=255, int g=255, int b=255, int a=255
+	);
+
+	NVGcontext* context() { return m_ren; }
+
 private:
 	int m_skin, m_font, m_fontSmall;
 	int m_fontWidth, m_fontHeight;
@@ -60,13 +69,6 @@ private:
 	void skin(
 		int x, int y, int w, int h,
 		int sx, int sy, int sw, int sh
-	);
-
-	void image(
-		int image,
-		int x, int y, int w, int h,
-		int sx, int sy, int sw, int sh,
-		int r=255, int g=255, int b=255, int a=255
 	);
 
 	void textGen(int font, int fw, int fh, int x, int y, const std::string& str, int r, int g, int b, int a);

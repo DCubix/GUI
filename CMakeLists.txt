@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(gui LANGUAGES C CXX VERSION 1.0)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
+option(BUILD_TEST "Build the test application." ON)
 
 if(WIN32 OR MINGW)
 	add_definitions(-DSDL_MAIN_HANDLED)
@@ -21,6 +21,10 @@ file(GLOB SRC
 
 	"glad/*.h"
 	"glad/*.c"
+
+	"pugixml/*.h"
+	"pugixml/*.hpp"
+	"pugixml/*.cpp"
 )
 
 find_package(SDL2 CONFIG REQUIRED)
@@ -31,12 +35,24 @@ add_library(${PROJECT_NAME} STATIC ${SRC})
 target_include_directories(${PROJECT_NAME} PUBLIC /)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/nanovg)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/osdialog)
 
-if (MINGW OR UNIX)
+if (BUILD_TEST)
+	add_executable(${PROJECT_NAME}_test "test/main.cpp")
+	target_link_libraries(${PROJECT_NAME}_test
+		PRIVATE
+		${PROJECT_NAME}
+		osdialog
+		stdc++fs
+	)
+endif()
+
+if (MINGW)
 	target_link_libraries(${PROJECT_NAME}
 		PRIVATE
 		${SDL2_LIBRARIES}
 		nanovg
+		osdialog
 		stdc++fs
 	)
 else()
@@ -44,5 +60,6 @@ else()
 		PRIVATE
 		SDL2::SDL2 SDL2::SDL2main
 		nanovg
+		osdialog
 	)
 endif()

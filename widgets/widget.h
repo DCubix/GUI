@@ -37,6 +37,9 @@ public:
 
 	Panel* getValidParent();
 
+	std::string name() const { return m_name; }
+	void name(const std::string& v) { m_name = v; }
+
 protected:
 	GUI* m_gui;
 	int m_layoutParam{ 0 };
@@ -50,6 +53,8 @@ protected:
 		m_columnSpan{ 1 };
 
 	Panel* getValidParentRecursive(Widget* parent);
+
+	std::string m_name{ "widget" };
 };
 
 #endif // SYG_WIDGET_H

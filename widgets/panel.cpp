@@ -3,7 +3,7 @@
 #include "../gui.h"
 
 Panel::Panel() {
-	setLayout(new GridLayout());
+	//setLayout(new GridLayout());
 }
 
 void Panel::onDraw(Renderer& renderer) {
