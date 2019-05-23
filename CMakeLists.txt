@@ -27,12 +27,12 @@ file(GLOB SRC
 	"pugixml/*.cpp"
 )
 
-find_package(SDL2 CONFIG REQUIRED)
+find_package(SDL2 CONFIG REQUIRED SDL2)
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SRC})
 
 add_library(${PROJECT_NAME} STATIC ${SRC})
-target_include_directories(${PROJECT_NAME} PUBLIC /)
+target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR})
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/nanovg)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/osdialog)
@@ -61,5 +61,11 @@ else()
 		SDL2::SDL2 SDL2::SDL2main
 		nanovg
 		osdialog
+	)
+endif()
+
+if (CMAKE_DL_LIBS)
+	target_link_libraries(${PROJECT_NAME} PRIVATE
+		${CMAKE_DL_LIBS}
 	)
 endif()
