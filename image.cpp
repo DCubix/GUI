@@ -36,7 +36,7 @@ PixelData::PixelData(const std::string& fileName) {
 	}
 }
 
-std::optional<Color> PixelData::get(int x, int y) {
+std::optional<Color> PixelData::get(int x, int y) const {
 	if (x < 0 || x >= m_width || y < 0 || y >= m_height) return {};
 	size_t i = (x + y * m_width) * 4;
 	Color col;

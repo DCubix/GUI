@@ -20,7 +20,7 @@ public:
 	PixelData(int width, int height);
 	PixelData(const std::string& fileName);
 
-	std::optional<Color> get(int x, int y);
+	std::optional<Color> get(int x, int y) const;
 	void set(int x, int y, float r, float g, float b, float a);
 
 	int width() const { return m_width; }
