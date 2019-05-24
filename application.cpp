@@ -1,7 +1,7 @@
 #include "application.h"
 
 int Application::run(const std::string& title, int width, int height) {
-	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
+	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		printf("%s", SDL_GetError());
 		return 1;
 	}
