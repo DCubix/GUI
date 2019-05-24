@@ -52,7 +52,7 @@ static void loadDefaultWidgetAttributes(Widget* widget, pugi::xml_node& node) {
 	widget->bounds().height = height;
 	widget->visible(visible);
 	widget->enabled(enabled);
-	widget->configure(row, col, rowSpan, colSpan);
+	widget->configure(row, col, colSpan, rowSpan);
 	widget->layoutParam(layoutParam);
 	widget->name(node.attribute("name").as_string(""));
 }
