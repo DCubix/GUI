@@ -8,7 +8,12 @@ void Image::load(Renderer& renderer, const PixelData& data) {
 	if (m_handle == -1) {
 		m_handle = nvgCreateImageRGBA(renderer.context(), data.width(), data.height(), 0, data.data().data());
 	} else {
-		nvgUpdateImage(renderer.context(), m_handle, data.data().data());
+		if (m_width != data.width() || m_height != data.height()) {
+			nvgDeleteImage(renderer.context(), m_handle);
+			m_handle = nvgCreateImageRGBA(renderer.context(), data.width(), data.height(), 0, data.data().data());
+		} else {
+			nvgUpdateImage(renderer.context(), m_handle, data.data().data());
+		}
 	}
 	m_width = data.width();
 	m_height = data.height();
