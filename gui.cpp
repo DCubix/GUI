@@ -31,7 +31,7 @@ static void loadDefaultWidgetAttributes(Widget* widget, pugi::xml_node& node) {
 	int width = node.attribute("width").as_int(22);
 	int height = node.attribute("height").as_int(22);
 	bool visible = node.attribute("visible").as_bool(true);
-	bool enabled = node.attribute("visible").as_bool(true);
+	bool enabled = node.attribute("enabled").as_bool(true);
 	int row = node.attribute("row").as_int(0);
 	int col = node.attribute("col").as_int(0);
 	int rowSpan = node.attribute("rowSpan").as_int(1);
