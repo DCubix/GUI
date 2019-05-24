@@ -31,7 +31,7 @@ PixelData::PixelData(const std::string& fileName) {
 	int comp;
 	uint8_t* data = stbi_load(fileName.c_str(), &m_width, &m_height, &comp, 4);
 	if (data) {
-		m_data = std::vector<uint8_t>(data, data + comp * m_width * m_height);
+		m_data = std::vector<uint8_t>(data, data + 4 * m_width * m_height);
 		stbi_image_free(data);
 	}
 }
