@@ -50,7 +50,7 @@ int Application::run(const std::string& title, int width, int height) {
 
 		switch (m_gui->events()->poll()) {
 			case EventHandler::Status::Quit: onExit(m_gui.get()); break;
-			case EventHandler::Status::Resize: m_gui->clear(); m_gui->root()->invalidate(); break;
+			case EventHandler::Status::Resize: m_gui->clear(); break;
 			default: break;
 		}
 

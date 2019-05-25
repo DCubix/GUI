@@ -13,6 +13,10 @@ Panel* Widget::getValidParent() {
 	return getValidParentRecursive((Widget*) m_parent);
 }
 
+Element::Size Widget::preferredSize() {
+	return { m_bounds.width, m_bounds.height };
+}
+
 Panel* Widget::getValidParentRecursive(Widget* parent) {
 	if (!parent) return nullptr;
 

@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "widget.h"
+#include "scroll.h"
 #include "../layout.h"
 
 class Panel : public Widget {
@@ -33,7 +34,8 @@ public:
 	void setLayout(Layout* layout);
 
 	void removeAll();
-	virtual void invalidate() override;
+
+	virtual Size preferredSize() override;
 
 private:
 	std::unique_ptr<Layout> m_layout;

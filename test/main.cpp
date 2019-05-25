@@ -7,8 +7,8 @@ class App : public Application {
 public:
 	virtual void onBuild(GUI* gui) override {
 		gui->load(R"(
-<root layout="border">
-	<list param="top" height="80" selected="2">
+<root layout="stack">
+	<list height="70" selected="2" width="240">
 		<item>Apples</item>
 		<item>Oranges</item>
 		<item>POMEGRANATES</item>
@@ -21,6 +21,12 @@ public:
 		<item>Pineapple ON PIZZA :ok_hand:</item>
 		<item>Bread</item>
 	</list>
+	<button text="Button" height="20" width="120" />
+	<check text="Check" selected="false" height="20" width="120" />
+	<spinner suffix=" Value" value="0.5" height="20" width="120" />
+	<scrollview height="180">
+		<imageview src="out.png" />
+	</scrollview>
 </root>
 )");
 	}

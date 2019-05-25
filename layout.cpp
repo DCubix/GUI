@@ -54,10 +54,12 @@ void BorderLayout::apply(Panel* panel, std::vector<Widget*> widgets) {
 
 void GridLayout::apply(Panel* panel, std::vector<Widget*> widgets) {
 	auto b = panel->realBounds();
+	const int panelWidth = b.width;
+	const int panelHeight = b.height;
 	const int spacingWidth = (panel->gridWidth() - 1) * panel->spacing();
 	const int spacingHeight = (panel->gridHeight() - 1) * panel->spacing();
-	const int width = b.width - (spacingWidth + panel->padding() * 2);
-	const int height = b.height - (spacingHeight + panel->padding() * 2);
+	const int width = panelWidth - (spacingWidth + panel->padding() * 2);
+	const int height = panelHeight - (spacingHeight + panel->padding() * 2);
 	const int cellWidth = width / panel->gridWidth();
 	const int cellHeight = height / panel->gridHeight();
 

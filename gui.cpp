@@ -11,6 +11,7 @@
 #include "widgets/imageview.h"
 #include "widgets/scroll.h"
 #include "widgets/list.h"
+#include "widgets/scrollview.h"
 
 GUI::GUI() {
 	m_events = std::make_unique<EventHandler>();
@@ -57,9 +58,56 @@ static void loadDefaultWidgetAttributes(Widget* widget, pugi::xml_node& node) {
 	widget->configure(row, col, colSpan, rowSpan);
 	widget->layoutParam(layoutParam);
 	widget->name(node.attribute("name").as_string(""));
+	widget->autoSize(node.attribute("autoSize").as_bool(false));
 }
 
-static void loadWidget(GUI* gui, Panel* parent, pugi::xml_node& node) {
+static void setupPanel(Panel* panel, pugi::xml_node& node) {
+	bool drawBg = node.attribute("background").as_bool(true);
+	int gridW = node.attribute("gridWidth").as_int(10);
+	int gridH = node.attribute("gridHeight").as_int(10);
+	int pad = node.attribute("padding").as_int(4);
+	int space = node.attribute("spacing").as_int(4);
+	std::string layout = node.attribute("layout").as_string();
+	std::transform(layout.begin(), layout.end(), layout.begin(), ::tolower);
+
+	panel->drawBackground(drawBg);
+	panel->gridWidth(gridW);
+	panel->gridHeight(gridH);
+	panel->padding(pad);
+	panel->spacing(space);
+	loadDefaultWidgetAttributes(panel, node);
+
+	if (layout == "border") {
+		panel->setLayout(new BorderLayout());
+	} else if (layout == "grid") {
+		panel->setLayout(new GridLayout());
+	} else if (layout == "stack") {
+		panel->setLayout(new StackLayout());
+	} else if (layout == "flow") {
+		panel->setLayout(new FlowLayout());
+	}
+}
+
+static Widget* loadWidget(GUI* gui, Panel* parent, pugi::xml_node& node);
+static Panel* loadPanel(GUI* gui, Panel* parent, pugi::xml_node& node) {
+	Panel* panel = gui->create<Panel>();
+	setupPanel(panel, node);
+
+	for (auto& c : node.children()) {
+		if (std::string(c.name()) == "panel") {
+			loadPanel(gui, panel, c);
+		} else {
+			loadWidget(gui, panel, c);
+		}
+	}
+
+	if (parent != nullptr) {
+		parent->add(panel);
+	}
+	return panel;
+}
+
+Widget* loadWidget(GUI* gui, Panel* parent, pugi::xml_node& node) {
 	static const std::string params[] = {
 		"left", "center", "right"
 	};
@@ -79,7 +127,6 @@ static void loadWidget(GUI* gui, Panel* parent, pugi::xml_node& node) {
 		w = gui->create<Label>();
 		((Label*) w)->text(node.attribute("text").as_string());
 		((Label*) w)->textAlign(Label::Alignment(align));
-		((Label*) w)->autoWidth(node.attribute("autoWidth").as_bool(true));
 	} else if (name == "button") {
 		w = gui->create<Button>();
 		((Button*) w)->text(node.attribute("text").as_string());
@@ -124,6 +171,18 @@ static void loadWidget(GUI* gui, Panel* parent, pugi::xml_node& node) {
 			list.push_back(n.first_child().value());
 		}
 		((List*) w)->list(list);
+	} else if (name == "scrollview") {
+		w = gui->create<ScrollView>();
+		auto wd = node.first_child();
+		if (wd) {
+			Widget* widget = nullptr;
+			if (std::string(wd.name()) == "panel") {
+				widget = loadPanel(gui, nullptr, wd);
+			} else {
+				widget = loadWidget(gui, nullptr, wd);
+			}
+			((ScrollView*) w)->widget(widget);
+		}
 	}
 
 	if (w != nullptr) {
@@ -132,50 +191,7 @@ static void loadWidget(GUI* gui, Panel* parent, pugi::xml_node& node) {
 			parent->add(w);
 		}
 	}
-}
-
-static void setupPanel(Panel* panel, pugi::xml_node& node) {
-	bool drawBg = node.attribute("background").as_bool(true);
-	int gridW = node.attribute("gridWidth").as_int(10);
-	int gridH = node.attribute("gridHeight").as_int(10);
-	int pad = node.attribute("padding").as_int(4);
-	int space = node.attribute("spacing").as_int(4);
-	std::string layout = node.attribute("layout").as_string();
-	std::transform(layout.begin(), layout.end(), layout.begin(), ::tolower);
-
-	panel->drawBackground(drawBg);
-	panel->gridWidth(gridW);
-	panel->gridHeight(gridH);
-	panel->padding(pad);
-	panel->spacing(space);
-	loadDefaultWidgetAttributes(panel, node);
-
-	if (layout == "border") {
-		panel->setLayout(new BorderLayout());
-	} else if (layout == "grid") {
-		panel->setLayout(new GridLayout());
-	} else if (layout == "stack") {
-		panel->setLayout(new StackLayout());
-	} else if (layout == "flow") {
-		panel->setLayout(new FlowLayout());
-	}
-}
-
-static void loadPanel(GUI* gui, Panel* parent, pugi::xml_node& node) {
-	Panel* panel = gui->create<Panel>();
-	setupPanel(panel, node);
-
-	for (auto& c : node.children()) {
-		if (std::string(c.name()) == "panel") {
-			loadPanel(gui, panel, c);
-		} else {
-			loadWidget(gui, panel, c);
-		}
-	}
-
-	if (parent != nullptr) {
-		parent->add(panel);
-	}
+	return w;
 }
 
 void GUI::load(const std::string& xmlData) {
@@ -248,10 +264,6 @@ void GUI::destroy(Widget* widget) {
 		it->reset();
 		m_widgets.erase(it, m_widgets.end());
 	}
-
-	for (auto&& widget : m_widgets) {
-		widget->invalidate();
-	}
 	m_clear = true;
 }
 
@@ -278,16 +290,8 @@ void GUI::render(int width, int height) {
 	m_renderer->begin(width, height);
 
 	for (auto&& widget : m_widgets) {
-		auto b = widget->bounds();
-		if (widget->parent() == nullptr) {
-			m_renderer->pushClipping(b.x, b.y, b.width, b.height);
-		}
-
 		if (widget->visible()) {
 			widget->onDraw(*m_renderer.get());
-		}
-		if (widget->parent() == nullptr) {
-			m_renderer->popClipping();
 		}
 	}
 

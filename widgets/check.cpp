@@ -3,7 +3,6 @@
 void Check::onClick(int button, int x, int y) {
 	m_checked = !m_checked;
 	if (m_onChecked) m_onChecked(m_checked);
-	invalidate();
 	Widget::onClick(button, x, y);
 }
 

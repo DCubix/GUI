@@ -150,7 +150,7 @@ void Renderer::pushClipping(int x, int y, int w, int h) {
 
 	if (m_clipRects.empty()) {
 		if (w < 1 || h < 1) return;
-		nvgSave(m_ren);
+		//nvgSave(m_ren);
 	} else {
 		// Merge
 		SDL_Rect parent = m_clipRects.top();
@@ -179,7 +179,7 @@ void Renderer::popClipping() {
 		m_clipRects.pop();
 	}
 	if (m_clipRects.empty()) {
-		nvgRestore(m_ren);
+		//nvgRestore(m_ren);
 	} else {
 		SDL_Rect cr = m_clipRects.top();
 		nvgScissor(m_ren, cr.x, cr.y, cr.w, cr.h);

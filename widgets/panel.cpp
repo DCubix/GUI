@@ -3,13 +3,13 @@
 #include "../gui.h"
 
 Panel::Panel() {
-	//setLayout(new GridLayout());
 }
 
 void Panel::onDraw(Renderer& renderer) {
 	performLayout();
 
 	auto b = realBounds();
+
 	if (m_drawBackground) renderer.panel(b.x, b.y, b.width, b.height);
 	renderer.pushClipping(
 		b.x + m_padding, b.y + m_padding, 
@@ -34,7 +34,6 @@ void Panel::remove(Widget* widget) {
 		(*it)->m_parent = nullptr;
 		m_gui->events()->unsubscribe(*it);
 		m_children.erase(it);
-		invalidate();
 	}
 }
 
@@ -44,15 +43,22 @@ void Panel::removeAll() {
 		m_gui->events()->unsubscribe(w);
 	}
 	m_children.clear();
-	invalidate();
 }
 
-void Panel::invalidate() {
-	for (auto&& w : m_children) {
-		if (!w) continue;
-		w->invalidate();
+Element::Size Panel::preferredSize() {
+	if (m_autoSize) {
+		int contentWidth = 0;
+		int contentHeight = 0;
+		for (auto&& w : m_children) {
+			if (!w) continue;
+			if (!w->visible()) continue;
+			auto b = w->bounds();
+			contentWidth = std::max(contentWidth, b.x + b.width);
+			contentHeight = std::max(contentHeight, b.y + b.height);
+		}
+		return { contentWidth, contentHeight };
 	}
-	m_dirty = true;
+	return Widget::preferredSize();
 }
 
 void Panel::setLayout(Layout* layout) {

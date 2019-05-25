@@ -19,6 +19,8 @@ public:
 	int selected() const { return m_selected; }
 	void selected(int v) { m_selected = v; }
 
+	virtual Size preferredSize() override;
+
 private:
 	std::unique_ptr<Scroll> m_scroll;
 	std::vector<std::string> m_list;

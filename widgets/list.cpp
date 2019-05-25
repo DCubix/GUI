@@ -57,7 +57,7 @@ void List::onDraw(Renderer& renderer) {
 	renderer.popClipping();
 
 	m_scroll->minimum(0.0f);
-	m_scroll->maximum(ItemHeight * (m_list.size() + 1));
+	m_scroll->maximum(int(ItemHeight * (m_list.size() + 1)) - b.height);
 
 	m_scroll->bounds().x = b.x + w - 1;
 	m_scroll->bounds().y = b.y;
@@ -83,4 +83,11 @@ void List::onPress(int button, int x, int y) {
 
 void List::onScroll(int direction) {
 	m_scroll->onScroll(direction);
+}
+
+Element::Size List::preferredSize() {
+	if (m_autoSize) {
+		return { m_bounds.width, int(ItemHeight * m_list.size() + 4) };
+	}
+	return Widget::preferredSize();
 }

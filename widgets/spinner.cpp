@@ -37,7 +37,7 @@ void Spinner::onDraw(Renderer& renderer) {
 	int mainW = b.width - buttonW;
 	int barW = int((mainW - 4) * vnorm);
 
-	renderer.panel(b.x, b.y, mainW, b.height);
+	renderer.panel(b.x, b.y, b.width, b.height);
 	if (m_draggable) renderer.rect(b.x + 2, b.y + 2, barW, b.height - 4, 0, 0, 0, 80, true);
 
 	int halfH = b.height / 2;
@@ -69,18 +69,14 @@ void Spinner::onMove(int x, int y) {
 	int mainW = b.width - buttonW;
 	if (hitsR(x, y, mainW, 0, buttonW, halfH)) { // INC
 		m_incState = 1;
-		invalidate();
 	} else {
 		m_incState = 0;
-		invalidate();
 	}
 
 	if (hitsR(x, y, mainW, halfH, buttonW, halfH)) { // DEC
 		m_decState = 1;
-		invalidate();
 	} else {
 		m_decState = 0;
-		invalidate();
 	}
 
 	if (m_decState == 0 && m_incState == 0 && m_clicked && m_draggable) {
@@ -118,7 +114,6 @@ void Spinner::onDoubleClick(int button, int x, int y) {
 	if (hitsR(x, y, 0, 0, mainW, b.height)) {
 		m_editing = true;
 		m_valText = "";
-		invalidate();
 	}
 }
 
@@ -131,19 +126,15 @@ void Spinner::onPress(int button, int x, int y) {
 		if (hitsR(x, y, mainW, 0, buttonW, halfH)) { // INC
 			value(std::clamp(value() + step(), m_min, m_max));
 			m_incState = 2;
-			invalidate();
 		} else {
 			m_incState = 1;
-			invalidate();
 		}
 
 		if (hitsR(x, y, mainW, halfH, buttonW, halfH)) { // DEC
 			value(std::clamp(value() - step(), m_min, m_max));
 			m_decState = 2;
-			invalidate();
 		} else {
 			m_decState = 1;
-			invalidate();
 		}
 	}
 }
@@ -152,7 +143,6 @@ void Spinner::onRelease(int button, int x, int y) {
 	Widget::onRelease(button, x, y);
 	m_incState = 0;
 	m_decState = 0;
-	invalidate();
 }
 
 void Spinner::onScroll(int direction) {
@@ -162,7 +152,6 @@ void Spinner::onScroll(int direction) {
 void Spinner::onType(char chr) {
 	if (m_editing) {
 		m_valText.push_back(chr);
-		invalidate();
 	}
 }
 
@@ -170,14 +159,12 @@ void Spinner::onEnter() {
 	Widget::onEnter();
 	m_incState = 0;
 	m_decState = 0;
-	invalidate();
 }
 
 void Spinner::onExit() {
 	Widget::onExit();
 	m_incState = 0;
 	m_decState = 0;
-	invalidate();
 }
 
 void Spinner::onBlur() {
@@ -201,12 +188,11 @@ void Spinner::onKeyPress(int key, int mod) {
 	}
 
 	if (m_editing && key == SDLK_BACKSPACE) {
-		if (!m_valText.empty()) m_valText.pop_back(); invalidate();
+		if (!m_valText.empty()) m_valText.pop_back();
 	}
 }
 
 void Spinner::value(float v) {
 	if (m_onChange) m_onChange(v);
 	m_value = v;
-	invalidate();
 }

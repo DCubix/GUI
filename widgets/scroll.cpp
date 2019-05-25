@@ -20,15 +20,15 @@ void Scroll::onDraw(Renderer& renderer) {
 	const float thumbSizeSmall = m_orientation == Horizontal ? b.height : b.width;
 
 	renderer.panel(b.x, b.y, b.width, b.height);
-	renderer.rect(b.x, b.y, b.width, b.height, 0, 0, 0, 50, true);
-	if (ts < sz) {
+	renderer.rect(b.x+1, b.y+1, b.width-1, b.height-1, 0, 0, 0, 50, true);
+//	if (ts < sz) {
 		float pos = thumbPos();
 		if (m_orientation == Horizontal) {
 			renderer.button(b.x + pos + 2, b.y + 2, ts - 4, thumbSizeSmall - 4, m_state);
 		} else {
 			renderer.button(b.x + 2, b.y + pos + 2, thumbSizeSmall - 4, ts - 4, m_state);
 		}
-	}
+//	}
 }
 
 void Scroll::onPress(int button, int x, int y) {
@@ -39,7 +39,7 @@ void Scroll::onPress(int button, int x, int y) {
 	const float ts = thumbSize();
 	const float thumbSizeSmall = m_orientation == Horizontal ? b.height : b.width;
 
-	if (ts > sz) return;
+//	if (ts > sz) return;
 
 	bool hitThumb = m_orientation == Horizontal ?
 				hitsR(x, y, 0, 0, sz, thumbSizeSmall) :
@@ -69,7 +69,7 @@ void Scroll::onMove(int x, int y) {
 	const float ts = thumbSize();
 	const float thumbSizeSmall = m_orientation == Horizontal ? b.height : b.width;
 
-	if (ts > sz) return;
+//	if (ts > sz) return;
 
 	bool hitThumb = m_orientation == Horizontal ?
 				hitsR(x, y, 0, 0, sz, thumbSizeSmall) :
@@ -82,6 +82,8 @@ void Scroll::onMove(int x, int y) {
 	}
 
 	if (m_clicked) {
+		m_state = State::Click;
+
 		const float tsh = ts / 2.0f;
 		float xnorm = (float(m_orientation == Horizontal ? x : y) - tsh) / (sz - ts);
 		xnorm = std::clamp(xnorm, 0.0f, 1.0f);
@@ -111,7 +113,7 @@ void Scroll::value(float v) {
 float Scroll::thumbSize() const {
 	auto b = realBounds();
 	const float sz = m_orientation == Horizontal ? b.width : b.height;
-	const float r = sz / (m_max - m_min);
+	const float r = sz > (m_max - m_min) ? (m_max - m_min) / sz : sz / (m_max - m_min);
 	return m_orientation == Horizontal ? b.width * r : b.height * r;
 	//return 16.0f;
 }

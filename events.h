@@ -18,6 +18,10 @@ public:
 		int x{ 0 }, y{ 0 }, width{ 100 }, height{ 100 };
 	};
 
+	struct Size {
+		int width{ 100 }, height{ 100 };
+	};
+
 	virtual void onMove(int x, int y) { if (m_onMove) m_onMove(x, y); }
 	virtual void onClick(int button, int x, int y) { if (m_onClick) m_onClick(button, x, y); }
 	virtual void onDoubleClick(int button, int x, int y) { if (m_onDoubleClick) m_onDoubleClick(button, x, y); }

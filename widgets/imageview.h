@@ -11,6 +11,8 @@ public:
 	Image* image() { return m_image; }
 	void image(Image* img) { m_image = img; }
 
+	virtual Size preferredSize() override;
+
 private:
 	Image* m_image{ nullptr };
 };

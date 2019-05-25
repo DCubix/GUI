@@ -12,18 +12,17 @@ public:
 	virtual void onDraw(Renderer& renderer) override;
 
 	std::string text() const { return m_text; }
-	void text(const std::string& v) { m_text = v; invalidate(); }
+	void text(const std::string& v) { m_text = v; }
 
 	Alignment textAlign() const { return m_textAlign; }
-	void textAlign(Alignment v) { m_textAlign = v; invalidate(); }
+	void textAlign(Alignment v) { m_textAlign = v; }
 
-	bool autoWidth() const { return m_autoWidth; }
-	void autoWidth(bool v) { m_autoWidth = v; invalidate(); }
+	virtual Size preferredSize() override;
 
 private:
 	std::string m_text{ "Label" };
 	Alignment m_textAlign{ Left };
-	bool m_autoWidth{ false };
+	int m_textWidth;
 };
 
 #endif // SYG_LABEL_H

@@ -23,9 +23,12 @@ public:
 	std::string text() const { return m_text; }
 	void text(const std::string& v) { m_text = v; }
 
+	virtual Size preferredSize() override;
+
 private:
 	State m_state{ State::Normal };
 	std::string m_text{ "Button" };
+	int m_textWidth;
 };
 
 #endif // SYG_BUTTON_H
