@@ -8,9 +8,9 @@
 
 #include "renderer.h"
 
-struct Color {
+typedef struct Color {
 	float r, g, b, a;
-};
+} Color;
 
 class PixelData {
 public:
