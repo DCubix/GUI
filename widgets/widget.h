@@ -9,6 +9,7 @@ class Panel;
 class Widget : public Element {
 	friend class GUI;
 	friend class Panel;
+	friend class List;
 public:
 	virtual ~Widget() = default;
 

@@ -3,15 +3,15 @@
 
 #include "widget.h"
 
+enum State {
+	Normal = 0,
+	Hover,
+	Click,
+	Disabled
+};
+
 class Button : public Widget {
 public:
-	enum State {
-		Normal = 0,
-		Hover,
-		Click,
-		Disabled
-	};
-
 	Button();
 
 	virtual void onDraw(Renderer& renderer) override;

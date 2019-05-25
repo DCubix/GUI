@@ -9,6 +9,8 @@
 #include "widgets/button.h"
 #include "widgets/check.h"
 #include "widgets/imageview.h"
+#include "widgets/scroll.h"
+#include "widgets/list.h"
 
 GUI::GUI() {
 	m_events = std::make_unique<EventHandler>();
@@ -99,6 +101,29 @@ static void loadWidget(GUI* gui, Panel* parent, pugi::xml_node& node) {
 		if (!fileName.empty()) {
 			((ImageView*) w)->image(gui->createImage(fileName));
 		}
+	} else if (name == "scroll") {
+		w = gui->create<Scroll>();
+
+		std::string ori = node.attribute("orientation").as_string("horizontal");
+		std::transform(ori.begin(), ori.end(), ori.begin(), ::tolower);
+
+		((Scroll*) w)->minimum(node.attribute("min").as_float());
+		((Scroll*) w)->maximum(node.attribute("max").as_float(100.0f));
+		((Scroll*) w)->value(node.attribute("value").as_float(((Scroll*) w)->minimum()));
+		((Scroll*) w)->step(node.attribute("step").as_float(1.0f));
+		((Scroll*) w)->orientation(
+					ori == "horizontal" ? Scroll::Horizontal :
+					ori == "vertical" ? Scroll::Vertical : Scroll::Horizontal
+		);
+	} else if (name == "list") {
+		w = gui->create<List>();
+		((List*) w)->selected(node.attribute("selected").as_int(-1));
+
+		std::vector<std::string> list;
+		for (auto& n : node.children("item")) {
+			list.push_back(n.first_child().value());
+		}
+		((List*) w)->list(list);
 	}
 
 	if (w != nullptr) {
