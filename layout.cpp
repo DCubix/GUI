@@ -4,8 +4,7 @@
 #include "widgets/panel.h"
 
 void BorderLayout::apply(Panel* panel, std::vector<Widget*> widgets) {
-	auto b = panel->realBounds();
-	auto sz = panel->preferredSize();
+	auto sz = panel->realBounds();
 	int top = panel->padding();
 	int bottom = sz.height - panel->padding();
 	int left = panel->padding();
@@ -54,7 +53,7 @@ void BorderLayout::apply(Panel* panel, std::vector<Widget*> widgets) {
 }
 
 void GridLayout::apply(Panel* panel, std::vector<Widget*> widgets) {
-	auto sz = panel->preferredSize();
+	auto sz = panel->bounds();
 	const int panelWidth = sz.width;
 	const int panelHeight = sz.height;
 	const int spacingWidth = (panel->gridWidth() - 1) * panel->spacing();
@@ -73,23 +72,21 @@ void GridLayout::apply(Panel* panel, std::vector<Widget*> widgets) {
 }
 
 void StackLayout::apply(Panel* panel, std::vector<Widget*> widgets) {
-	auto sz = panel->preferredSize();
 	int y = panel->padding();
 	for (Widget* w : widgets) {
 		w->bounds().x = panel->padding();
 		w->bounds().y = y;
-		w->bounds().width = sz.width - panel->padding() * 2;
+		w->bounds().width = panel->bounds().width - panel->padding() * 2;
 		y += w->bounds().height + panel->spacing();
 	}
 }
 
 void FlowLayout::apply(Panel* panel, std::vector<Widget*> widgets) {
-	auto sz = panel->preferredSize();
 	int x = panel->padding();
 	for (Widget* w : widgets) {
 		w->bounds().x = x;
 		w->bounds().y = panel->padding();
-		w->bounds().height = sz.height - panel->padding() * 2;
+		w->bounds().height = panel->bounds().width - panel->padding() * 2;
 		x += w->bounds().width + panel->spacing();
 	}
 }
