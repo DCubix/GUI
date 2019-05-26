@@ -4,6 +4,8 @@
 
 #include "stb.h"
 
+static const Color DEFAULT = { 0.0f, 0.0f, 0.0f, 1.0f };
+
 void Image::load(Renderer& renderer, const PixelData& data) {
 	if (m_handle == -1) {
 		m_handle = nvgCreateImageRGBA(renderer.context(), data.width(), data.height(), 0, data.data().data());
@@ -41,8 +43,8 @@ PixelData::PixelData(const std::string& fileName) {
 	}
 }
 
-std::optional<Color> PixelData::get(int x, int y) const {
-	if (x < 0 || x >= m_width || y < 0 || y >= m_height) return {};
+Color PixelData::get(int x, int y) const {
+	if (x < 0 || x >= m_width || y < 0 || y >= m_height) return DEFAULT;
 	size_t i = (x + y * m_width) * 4;
 	Color col;
 	col.r = float(m_data[i + 0]) / 255.0f;
