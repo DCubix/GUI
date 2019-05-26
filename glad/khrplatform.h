@@ -90,20 +90,12 @@
  *                                  int arg2) KHRONOS_APIATTRIBUTES;
  */
 
-#if defined(__SCITECH_SNAP__) && !defined(KHRONOS_STATIC)
-#   define KHRONOS_STATIC 1
-#endif
-
 /*-------------------------------------------------------------------------
  * Definition of KHRONOS_APICALL
  *-------------------------------------------------------------------------
  * This precedes the return type of the function in the function prototype.
  */
-#if defined(KHRONOS_STATIC)
-    /* If the preprocessor constant KHRONOS_STATIC is defined, make the
-     * header compatible with static linking. */
-#   define KHRONOS_APICALL
-#elif defined(_WIN32)
+#if defined(_WIN32) && !defined(__SCITECH_SNAP__)
 #   define KHRONOS_APICALL __declspec(dllimport)
 #elif defined (__SYMBIAN32__)
 #   define KHRONOS_APICALL IMPORT_C
@@ -119,8 +111,8 @@
  * This follows the return type of the function  and precedes the function
  * name in the function prototype.
  */
-#if defined(_WIN32) && !defined(_WIN32_WCE) && !defined(KHRONOS_STATIC)
-    /* Win32 but not WinCE */
+#if defined(_WIN32) && !defined(_WIN32_WCE) && !defined(__SCITECH_SNAP__)
+	/* Win32 but not WinCE */
 #   define KHRONOS_APIENTRY __stdcall
 #else
 #   define KHRONOS_APIENTRY
@@ -282,9 +274,9 @@ typedef khronos_int64_t        khronos_stime_nanoseconds_t;
  * comparisons should not be made against KHRONOS_TRUE.
  */
 typedef enum {
-    KHRONOS_FALSE = 0,
-    KHRONOS_TRUE  = 1,
-    KHRONOS_BOOLEAN_ENUM_FORCE_SIZE = KHRONOS_MAX_ENUM
+	KHRONOS_FALSE = 0,
+	KHRONOS_TRUE  = 1,
+	KHRONOS_BOOLEAN_ENUM_FORCE_SIZE = KHRONOS_MAX_ENUM
 } khronos_boolean_enum_t;
 
 #endif /* __khrplatform_h_ */
