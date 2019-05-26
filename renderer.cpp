@@ -10,14 +10,14 @@
 #define MAX_SHADOW 16.0f
 
 extern "C" {
-	#define NANOVG_GL2_IMPLEMENTATION
+	#define NANOVG_GL3_IMPLEMENTATION
 	#include "nanovg/src/nanovg_gl.h"
 }
 
 Renderer::Renderer() {
 	gladLoadGLLoader(SDL_GL_GetProcAddress);
 
-	m_ren = nvgCreateGL2(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
+	m_ren = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
 
 	m_skin = nvgCreateImageMem(m_ren, 0, skin_data, skin_size);
 	m_font = nvgCreateImageMem(m_ren, 0, font_data, font_size);
