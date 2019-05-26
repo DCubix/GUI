@@ -23,6 +23,10 @@ List::List() {
 	m_scroll->m_gui = nullptr;
 }
 
+List::~List() {
+	m_gui->events()->unsubscribe(m_scroll.get());
+}
+
 void List::onDraw(Renderer& renderer) {
 	if (m_scroll->m_gui == nullptr) {
 		m_scroll->m_gui = m_gui;

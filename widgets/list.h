@@ -7,7 +7,7 @@
 class List : public Widget {
 public:
 	List();
-	virtual ~List() = default;
+	virtual ~List();
 
 	virtual void onDraw(Renderer& renderer) override;
 	virtual void onPress(int button, int x, int y) override;
