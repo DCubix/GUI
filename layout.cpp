@@ -86,7 +86,7 @@ void FlowLayout::apply(Panel* panel, std::vector<Widget*> widgets) {
 	for (Widget* w : widgets) {
 		w->bounds().x = x;
 		w->bounds().y = panel->padding();
-		w->bounds().height = panel->bounds().width - panel->padding() * 2;
+		w->bounds().height = panel->bounds().height - panel->padding() * 2;
 		x += w->bounds().width + panel->spacing();
 	}
 }
