@@ -17,11 +17,14 @@ public:
 	void list(const std::vector<std::string>& v) { m_list = v; }
 
 	int selected() const { return m_selected; }
-	void selected(int v) { m_selected = v; }
+	void selected(int v) { m_selected = v; if (m_onSelected) m_onSelected(v); }
+
+	void onSelected(const std::function<void(int)>& cb) { m_onSelected = cb; }
 
 	virtual Size preferredSize() override;
 
 private:
+	std::function<void(int)> m_onSelected;
 	std::unique_ptr<Scroll> m_scroll;
 	std::vector<std::string> m_list;
 	int m_selected{ -1 };

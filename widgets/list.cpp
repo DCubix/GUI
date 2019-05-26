@@ -74,7 +74,7 @@ void List::onPress(int button, int x, int y) {
 	int offy = int(m_scroll->value());
 	for (int i = 0; i < m_list.size(); i++) {
 		if (hitsR(x, y, 0, ky - offy, w - 4, ItemHeight)) {
-			m_selected = i;
+			selected(i);
 			break;
 		}
 		ky += ItemHeight;
