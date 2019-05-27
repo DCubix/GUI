@@ -57,6 +57,7 @@ int Application::run(const std::string& title, int width, int height) {
 		while (accum > timeStep) {
 			accum -= timeStep;
 			canRender = true;
+			onTick(m_gui.get(), float(timeStep));
 		}
 
 		if (canRender) {

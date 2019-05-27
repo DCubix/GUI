@@ -12,6 +12,7 @@ public:
 	int run(const std::string& title = "Application", int width = 640, int height = 480);
 
 	virtual void onBuild(GUI* gui) {}
+	virtual void onTick(GUI* gui, float ts) {}
 	virtual void onExit(GUI* gui) { quit(); }
 
 	void quit() { m_running = false; }
