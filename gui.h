@@ -16,6 +16,7 @@ class Spinner;
 class GUI {
 public:
 	GUI();
+	virtual ~GUI() = default;
 
 	void load(const std::string& xmlData);
 

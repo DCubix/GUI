@@ -24,7 +24,7 @@ List::List() {
 }
 
 List::~List() {
-	m_gui->events()->unsubscribe(m_scroll.get());
+	if (m_gui->events()) m_gui->events()->unsubscribe(m_scroll.get());
 }
 
 void List::onDraw(Renderer& renderer) {
