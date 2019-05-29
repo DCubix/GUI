@@ -26,7 +26,7 @@ public:
 	int width() const { return m_width; }
 	int height() const { return m_height; }
 
-	std::vector<uint8_t> data() const { return m_data; }
+	std::vector<uint8_t>& data() { return m_data; }
 
 private:
 	std::vector<uint8_t> m_data;
