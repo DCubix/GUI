@@ -43,17 +43,15 @@ if (BUILD_TEST)
 		PRIVATE
 		${PROJECT_NAME}
 		osdialog
-		stdc++fs
 	)
 endif()
 
-if (MINGW)
+if (MINGW OR APPLE)
 	target_link_libraries(${PROJECT_NAME}
 		PRIVATE
 		${SDL2_LIBRARIES}
 		nanovg
 		osdialog
-		stdc++fs
 	)
 else()
 	target_link_libraries(${PROJECT_NAME}

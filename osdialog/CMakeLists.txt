@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
 project(osdialog LANGUAGES C)
 
-set(INC "osdialog.h")
+set(INC "osdialog.h" "OsDialog.hpp")
 set(SRC "osdialog.c")
 set(LIBS)
 set(INCS)

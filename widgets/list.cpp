@@ -89,6 +89,10 @@ void List::onScroll(int direction) {
 	m_scroll->onScroll(direction);
 }
 
+void List::list(const std::vector<std::string>& v) {
+	m_list = v;
+}
+
 Element::Size List::preferredSize() {
 	if (m_autoSize) {
 		return { m_bounds.width, int(ItemHeight * m_list.size() + 4) };

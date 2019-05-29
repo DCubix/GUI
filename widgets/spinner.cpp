@@ -48,7 +48,8 @@ void Spinner::onDraw(Renderer& renderer) {
 
 	renderer.pushClipping(b.x, b.y, mainW, b.height);
 	if (!m_editing) {
-		auto txt = to_string_prec(m_value, 3) + m_suffix;
+		auto txt_ = (m_step - std::floor(m_step)) > 0.0f ? to_string_prec(m_value, 3) : std::to_string(int(m_value));
+		auto txt = txt_ + m_suffix;
 		int tw = renderer.textWidth(txt);
 		renderer.text(b.x + (mainW / 2 - tw / 2) + 1, b.y + (b.height / 2 - 6) + 1, txt, 0, 0, 0, 128);
 		renderer.text(b.x + (mainW / 2 - tw / 2), b.y + (b.height / 2 - 6), txt, 255, 255, 255, 128);

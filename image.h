@@ -27,6 +27,7 @@ public:
 	int height() const { return m_height; }
 
 	std::vector<uint8_t>& data() { return m_data; }
+	std::vector<uint8_t> dataCopy() const { return m_data; }
 
 private:
 	std::vector<uint8_t> m_data;

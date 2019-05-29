@@ -1,6 +1,8 @@
 #ifndef SYG_WIDGET_H
 #define SYG_WIDGET_H
 
+#include <cmath>
+
 #include "../events.h"
 #include "../renderer.h"
 

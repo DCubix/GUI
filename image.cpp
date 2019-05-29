@@ -8,13 +8,13 @@ static const Color DEFAULT = { 0.0f, 0.0f, 0.0f, 1.0f };
 
 void Image::load(Renderer& renderer, const PixelData& data) {
 	if (m_handle == -1) {
-		m_handle = nvgCreateImageRGBA(renderer.context(), data.width(), data.height(), 0, data.data().data());
+		m_handle = nvgCreateImageRGBA(renderer.context(), data.width(), data.height(), 0, data.dataCopy().data());
 	} else {
 		if (m_width != data.width() || m_height != data.height()) {
 			nvgDeleteImage(renderer.context(), m_handle);
-			m_handle = nvgCreateImageRGBA(renderer.context(), data.width(), data.height(), 0, data.data().data());
+			m_handle = nvgCreateImageRGBA(renderer.context(), data.width(), data.height(), 0, data.dataCopy().data());
 		} else {
-			nvgUpdateImage(renderer.context(), m_handle, data.data().data());
+			nvgUpdateImage(renderer.context(), m_handle, data.dataCopy().data());
 		}
 	}
 	m_width = data.width();

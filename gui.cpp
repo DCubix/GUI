@@ -13,6 +13,8 @@
 #include "widgets/list.h"
 #include "widgets/scrollview.h"
 
+#include "localization.h"
+
 GUI::GUI() {
 	m_events = std::make_unique<EventHandler>();
 	m_renderer = std::make_unique<Renderer>();
@@ -22,6 +24,8 @@ GUI::GUI() {
 	m_root->gridHeight(16);
 	m_root->spacing(4);
 	m_root->padding(2);
+
+	Locale::init();
 }
 
 static void loadDefaultWidgetAttributes(Widget* widget, pugi::xml_node& node) {

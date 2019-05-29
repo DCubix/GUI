@@ -14,7 +14,7 @@ public:
 	virtual void onScroll(int direction) override;
 
 	std::vector<std::string> list() const { return m_list; }
-	void list(const std::vector<std::string>& v) { m_list = v; }
+	void list(const std::vector<std::string>& v);
 
 	int selected() const { return m_selected; }
 	void selected(int v) { m_selected = v; if (m_onSelected) m_onSelected(v); }
