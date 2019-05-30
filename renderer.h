@@ -41,7 +41,7 @@ public:
 
 	void text(int x, int y, const std::string& str, int r, int g, int b, int a = 255);
 	void textSmall(int x, int y, const std::string& str, int r, int g, int b, int a = 255);
-	int textWidth(const std::string& str) const { return str.size() * 8; }
+	int textWidth(const std::string& str) const;
 
 	void patch(int x, int y, int w, int h, int sx, int sy, int sw, int sh, int pad = 5, int tpad = -1);
 
@@ -72,7 +72,7 @@ private:
 	);
 
 	void textGen(int font, int fw, int fh, int x, int y, const std::string& str, int r, int g, int b, int a);
-	void putChar(int font, int fw, int fh, int x, int y, char c, int r, int g, int b, int a = 0xFF);
+	void putChar(int font, int fw, int fh, int x, int y, uint8_t c, int r, int g, int b, int a = 0xFF);
 };
 
 #endif // SYG_RENDERER_H

@@ -10,6 +10,7 @@ public:
 <root layout="stack">
 	<list height="70" selected="2" width="240">
 		<item>Apples</item>
+		<item>Maçã</item>
 		<item>Oranges</item>
 		<item>POMEGRANATES</item>
 		<item>Pineapples</item>
@@ -21,7 +22,7 @@ public:
 		<item>Pineapple ON PIZZA :ok_hand:</item>
 		<item>Bread</item>
 	</list>
-	<button text="Button" height="20" width="120" />
+	<button text="Button não é possível" height="20" width="120" />
 	<check text="Check" selected="false" height="20" width="120" />
 	<spinner suffix=" Value" value="0.5" height="20" width="120" />
 	<scrollview height="180">

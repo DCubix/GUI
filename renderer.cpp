@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
 
 #include "skin.h"
 #include "font.h"
@@ -194,6 +195,15 @@ void Renderer::textSmall(int x, int y, const std::string& str, int r, int g, int
 	textGen(m_fontSmall, m_fontSmallWidth, m_fontSmallHeight, x, y, str, r, g, b, a);
 }
 
+int Renderer::textWidth(const std::string& str) const {
+	int w = 0;
+	for (size_t i = 0; i < str.length(); i++) {
+		if (uint8_t(str.at(i)) >= 128) i++;
+		w += 8;
+	}
+	return w;
+}
+
 void Renderer::skin(int x, int y, int w, int h, int sx, int sy, int sw, int sh) {
 	image(m_skin, x, y, w, h, sx, sy, sw, sh);
 }
@@ -266,8 +276,8 @@ void Renderer::end() {
 
 void Renderer::textGen(int font, int fw, int fh, int x, int y, const std::string& str, int r, int g, int b, int a) {
 	int tx = x, ty = y;
-	for (int i = 0; i < str.size(); i++) {
-		int c = str[i];
+	for (size_t i = 0; i < str.length(); i++) {
+		uint8_t c = uint8_t(str.at(i)) & 0x7F;
 		if (c == '\n') {
 			tx = x;
 			ty += 12;
@@ -278,12 +288,12 @@ void Renderer::textGen(int font, int fw, int fh, int x, int y, const std::string
 	}
 }
 
-void Renderer::putChar(int font, int fw, int fh, int x, int y, char c, int r, int g, int b, int a) {
+void Renderer::putChar(int font, int fw, int fh, int x, int y, uint8_t c, int r, int g, int b, int a) {
 	const int cw = fw / 16;
 	const int ch = fh / 16;
 
-	const int sx = int(c & 0x7F) % 16 * cw;
-	const int sy = int(c & 0x7F) / 16 * ch;
+	const int sx = int(c) % 16 * cw;
+	const int sy = int(c) / 16 * ch;
 
 	image(font, x, y, cw, ch, sx, sy, cw, ch, r, g, b, a);
 }
