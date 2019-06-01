@@ -11,10 +11,24 @@ void SplitView::onDraw(Renderer& renderer) {
 
 	auto b = realBounds();
 	if (m_orientation == Horizontal) {
+		renderer.line(
+					b.x,
+					b.y + m_dividerLocation,
+					b.x + b.width,
+					b.y + m_dividerLocation,
+					255, 255, 255, 50, DividerSize/2
+		);
 		if (m_moving) {
 			renderer.rect(b.x, b.y + m_dividerLocation - DividerSize/2, b.width, DividerSize, 0, 0, 0, 128, true);
 		}
 	} else {
+		renderer.line(
+					b.x + m_dividerLocation,
+					b.y,
+					b.x + m_dividerLocation,
+					b.y + b.height,
+					255, 255, 255, 50, DividerSize/2
+		);
 		if (m_moving) {
 			renderer.rect(b.x + m_dividerLocation - DividerSize/2, b.y, DividerSize, b.height, 0, 0, 0, 128, true);
 		}
@@ -36,9 +50,9 @@ void SplitView::onDraw(Renderer& renderer) {
 		}
 
 		if (m_first->visible()) {
-			renderer.pushClipping(wb.x-1, wb.y-1, wb.width+2, wb.height+2);
+			//renderer.pushClipping(wb.x-1, wb.y-1, wb.width+2, wb.height+2);
 			m_first->onDraw(renderer);
-			renderer.popClipping();
+			//renderer.popClipping();
 		}
 	}
 
@@ -58,9 +72,9 @@ void SplitView::onDraw(Renderer& renderer) {
 		}
 
 		if (m_second->visible()) {
-			renderer.pushClipping(wb.x-1, wb.y-1, wb.width+2, wb.height+2);
+			//renderer.pushClipping(wb.x-1, wb.y-1, wb.width+2, wb.height+2);
 			m_second->onDraw(renderer);
-			renderer.popClipping();
+			//renderer.popClipping();
 		}
 	}
 }

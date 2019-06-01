@@ -3,19 +3,21 @@
 
 #include "widget.h"
 
-constexpr int DividerSize = 4;
+constexpr int DividerSize = 6;
 
 class SplitView : public Widget {
 public:
+	virtual ~SplitView() = default;
+
 	enum Orientation {
 		Horizontal = 0,
 		Vertical
 	};
 
 	virtual void onDraw(Renderer& renderer) override;
-	virtual void onPress(int button, int x, int y);
-	virtual void onRelease(int button, int x, int y);
-	virtual void onMove(int x, int y);
+	virtual void onPress(int button, int x, int y) override;
+	virtual void onRelease(int button, int x, int y) override;
+	virtual void onMove(int x, int y) override;
 
 	Widget* first() { return m_first; }
 	void first(Widget* w);

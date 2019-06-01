@@ -7,6 +7,7 @@
 class ScrollView : public Widget {
 public:
 	ScrollView();
+	virtual ~ScrollView() = default;
 
 	virtual void onDraw(Renderer& renderer) override;
 

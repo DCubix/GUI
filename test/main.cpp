@@ -23,7 +23,10 @@ public:
 	</list>
 	<splitview height="120">
 		<label text="This is supposed to be an extremely long string, to test word wrapping capabilities. Enjoy!!!" wordWrap="true" />
-		<label text="This is supposed to be an extremely long string, to test word wrapping capabilities. Enjoy!!!" wordWrap="true" />
+		<splitview orientation="horizontal">
+			<label text="This is supposed to be an extremely long string, to test word wrapping capabilities. Enjoy!!!" wordWrap="true" />
+			<button text="Test" />
+		</splitview>
 	</splitview>
 	<button text="Button" height="20" width="120" />
 	<check text="Check" selected="false" height="20" width="120" />
