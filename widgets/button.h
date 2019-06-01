@@ -21,7 +21,7 @@ public:
 	virtual void onExit() override;
 
 	std::string text() const { return m_text; }
-	void text(const std::string& v) { m_text = v; }
+	void text(const std::string& v) { m_text = LL(v); }
 
 	virtual Size preferredSize() override;
 

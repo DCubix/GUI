@@ -83,7 +83,10 @@ void List::onScroll(int direction) {
 }
 
 void List::list(const std::vector<std::string>& v) {
-	m_list = v;
+	m_list.clear();
+	for (auto&& str : v) {
+		m_list.push_back(LL(str));
+	}
 }
 
 Element::Size List::preferredSize() {

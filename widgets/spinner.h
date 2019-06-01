@@ -36,7 +36,7 @@ public:
 	void step(float v) { m_step = v; }
 
 	std::string suffix() const { return m_suffix; }
-	void suffix(const std::string& v) { m_suffix = v; }
+	void suffix(const std::string& v) { m_suffix = LL(v); }
 
 	bool draggable() const { return m_draggable; }
 	void draggable(bool v) { m_draggable = v; }

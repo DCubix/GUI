@@ -29,6 +29,11 @@ file(GLOB SRC
 
 find_package(SDL2 CONFIG REQUIRED SDL2)
 
+set(Boost_USE_STATIC_LIBS OFF)
+set(BUILD_SHARED_LIBS ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
+find_package(Boost REQUIRED COMPONENTS locale)
+
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SRC})
 
 add_library(${PROJECT_NAME} STATIC ${SRC})
@@ -43,6 +48,7 @@ if (BUILD_TEST)
 		PRIVATE
 		${PROJECT_NAME}
 		osdialog
+		Boost::locale
 	)
 endif()
 
@@ -52,6 +58,7 @@ if (MINGW OR APPLE)
 		${SDL2_LIBRARIES}
 		nanovg
 		osdialog
+		Boost::locale
 	)
 else()
 	target_link_libraries(${PROJECT_NAME}
@@ -59,6 +66,7 @@ else()
 		SDL2::SDL2 SDL2::SDL2main
 		nanovg
 		osdialog
+		Boost::locale
 	)
 endif()
 

@@ -6,6 +6,8 @@
 #include "../events.h"
 #include "../renderer.h"
 
+#include "localization.h"
+
 class GUI;
 class Panel;
 class Widget : public Element {

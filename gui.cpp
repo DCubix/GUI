@@ -26,7 +26,7 @@ GUI::GUI() {
 	m_root->spacing(4);
 	m_root->padding(2);
 
-	setlocale(LC_ALL, "");
+	Locale::init();
 }
 
 static void loadDefaultWidgetAttributes(Widget* widget, pugi::xml_node& node) {

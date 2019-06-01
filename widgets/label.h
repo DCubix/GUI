@@ -12,7 +12,7 @@ public:
 	virtual void onDraw(Renderer& renderer) override;
 
 	std::string text() const { return m_text; }
-	void text(const std::string& v) { m_text = v; }
+	void text(const std::string& v) { m_text = LL(v); }
 
 	Alignment textAlign() const { return m_textAlign; }
 	void textAlign(Alignment v) { m_textAlign = v; }

@@ -3,6 +3,10 @@
 
 #include <string>
 #include <map>
+#include <locale>
+
+#include <boost/locale.hpp>
+namespace lc = boost::locale;
 
 using Dict = std::map<std::string, std::string>;
 
@@ -14,6 +18,7 @@ public:
 private:
 	static Dict m_dictionary;
 	static std::string m_locale;
+	static std::locale m_loc;
 };
 
 #define LL(x) Locale::get(x)
