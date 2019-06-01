@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
+#include <sstream>
 
 #include "skin.h"
 #include "font.h"
@@ -187,21 +188,16 @@ void Renderer::popClipping() {
 	}
 }
 
-void Renderer::text(int x, int y, const std::string& str, int r, int g, int b, int a) {
-	textGen(m_font, m_fontWidth, m_fontHeight, x, y, str, r, g, b, a);
+void Renderer::text(int x, int y, const std::string& str, int r, int g, int b, int a, bool ww, int w) {
+	textGen(m_font, m_fontWidth, m_fontHeight, x, y, str, r, g, b, a, ww, w);
 }
 
-void Renderer::textSmall(int x, int y, const std::string& str, int r, int g, int b, int a) {
-	textGen(m_fontSmall, m_fontSmallWidth, m_fontSmallHeight, x, y, str, r, g, b, a);
+void Renderer::textSmall(int x, int y, const std::string& str, int r, int g, int b, int a, bool ww, int w) {
+	textGen(m_fontSmall, m_fontSmallWidth, m_fontSmallHeight, x, y, str, r, g, b, a, ww, w);
 }
 
 int Renderer::textWidth(const std::string& str) const {
-	int w = 0;
-	for (size_t i = 0; i < str.length(); i++) {
-		if (uint8_t(str.at(i)) >= 128) i++;
-		w += 8;
-	}
-	return w;
+	return str.size() * 8;
 }
 
 void Renderer::skin(int x, int y, int w, int h, int sx, int sy, int sw, int sh) {
@@ -274,15 +270,28 @@ void Renderer::end() {
 	nvgEndFrame(m_ren);
 }
 
-void Renderer::textGen(int font, int fw, int fh, int x, int y, const std::string& str, int r, int g, int b, int a) {
+void Renderer::textGen(int font, int fw, int fh, int x, int y, const std::string& str, int r, int g, int b, int a, bool ww, int w) {
 	int tx = x, ty = y;
-	for (size_t i = 0; i < str.length(); i++) {
-		uint8_t c = uint8_t(str.at(i)) & 0x7F;
-		if (c == '\n') {
+
+	std::stringstream ss(str);
+	std::string item;
+
+	while (std::getline(ss, item, ' ')) {
+		if (ww && tx + textWidth(item) > w) {
 			tx = x;
-			ty += 12;
-		} else {
-			if (c != ' ') putChar(font, fw, fh, tx, ty, c, r, g, b, a);
+			ty += 13;
+		}
+		for (size_t i = 0; i < item.length(); i++) {
+			uint8_t c = uint8_t(item.at(i));
+			if (c == '\n') {
+				tx = x;
+				ty += 13;
+			} else {
+				if (c != ' ') {
+					putChar(font, fw, fh, tx, ty, c, r, g, b, a);
+				}
+			}
+			tx += 8;
 		}
 		tx += 8;
 	}

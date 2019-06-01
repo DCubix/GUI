@@ -12,6 +12,7 @@
 #include "widgets/scroll.h"
 #include "widgets/list.h"
 #include "widgets/scrollview.h"
+#include "widgets/splitview.h"
 
 #include "localization.h"
 
@@ -119,6 +120,8 @@ Widget* loadWidget(GUI* gui, Panel* parent, pugi::xml_node& node) {
 	Widget* w = nullptr;
 	std::string name = node.name();
 	if (name == "label") {
+		bool ww = node.attribute("wordWrap").as_bool(false);
+
 		int align = 0;
 		std::string lparam = node.attribute("align").as_string();
 		std::transform(lparam.begin(), lparam.end(), lparam.begin(), ::tolower);
@@ -131,6 +134,7 @@ Widget* loadWidget(GUI* gui, Panel* parent, pugi::xml_node& node) {
 		w = gui->create<Label>();
 		((Label*) w)->text(node.attribute("text").as_string());
 		((Label*) w)->textAlign(Label::Alignment(align));
+		((Label*) w)->wordWrap(ww);
 	} else if (name == "button") {
 		w = gui->create<Button>();
 		((Button*) w)->text(node.attribute("text").as_string());
@@ -186,6 +190,40 @@ Widget* loadWidget(GUI* gui, Panel* parent, pugi::xml_node& node) {
 				widget = loadWidget(gui, nullptr, wd);
 			}
 			((ScrollView*) w)->widget(widget);
+		}
+	} else if (name == "splitview") {
+		w = gui->create<SplitView>();
+
+		std::string ori = node.attribute("orientation").as_string("vertical");
+		std::transform(ori.begin(), ori.end(), ori.begin(), ::tolower);
+
+		int divLoc = node.attribute("divider").as_int(20);
+		((SplitView*) w)->dividerLocation(divLoc);
+		((SplitView*) w)->orientation(
+					ori == "horizontal" ? SplitView::Horizontal :
+					ori == "vertical" ? SplitView::Vertical : SplitView::Horizontal
+		);
+
+		auto first = node.first_child();
+		if (first) {
+			Widget* firstW = nullptr;
+			if (std::string(first.name()) == "panel") {
+				firstW = loadPanel(gui, nullptr, first);
+			} else {
+				firstW = loadWidget(gui, nullptr, first);
+			}
+			((SplitView*) w)->first(firstW);
+		}
+
+		auto second = node.last_child();
+		if (second) {
+			Widget* secondW = nullptr;
+			if (std::string(second.name()) == "panel") {
+				secondW = loadPanel(gui, nullptr, second);
+			} else {
+				secondW = loadWidget(gui, nullptr, second);
+			}
+			((SplitView*) w)->second(secondW);
 		}
 	}
 

@@ -39,8 +39,8 @@ public:
 	void pushClipping(int x, int y, int w, int h);
 	void popClipping();
 
-	void text(int x, int y, const std::string& str, int r, int g, int b, int a = 255);
-	void textSmall(int x, int y, const std::string& str, int r, int g, int b, int a = 255);
+	void text(int x, int y, const std::string& str, int r, int g, int b, int a = 255, bool ww = false, int w = 0);
+	void textSmall(int x, int y, const std::string& str, int r, int g, int b, int a = 255, bool ww = false, int w = 0);
 	int textWidth(const std::string& str) const;
 
 	void patch(int x, int y, int w, int h, int sx, int sy, int sw, int sh, int pad = 5, int tpad = -1);
@@ -71,7 +71,14 @@ private:
 		int sx, int sy, int sw, int sh
 	);
 
-	void textGen(int font, int fw, int fh, int x, int y, const std::string& str, int r, int g, int b, int a);
+	void textGen(
+			int font,
+			int fw, int fh,
+			int x, int y,
+			const std::string& str,
+			int r, int g, int b, int a,
+			bool ww,
+			int w);
 	void putChar(int font, int fw, int fh, int x, int y, uint8_t c, int r, int g, int b, int a = 0xFF);
 };
 

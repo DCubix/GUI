@@ -13,6 +13,7 @@ class Widget : public Element {
 	friend class Panel;
 	friend class List;
 	friend class ScrollView;
+	friend class SplitView;
 public:
 	virtual ~Widget() = default;
 

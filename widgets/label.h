@@ -17,12 +17,16 @@ public:
 	Alignment textAlign() const { return m_textAlign; }
 	void textAlign(Alignment v) { m_textAlign = v; }
 
+	bool wordWrap() const { return m_wordWrap; }
+	void wordWrap(bool ww) { m_wordWrap = ww; }
+
 	virtual Size preferredSize() override;
 
 private:
 	std::string m_text{ "Label" };
 	Alignment m_textAlign{ Left };
 	int m_textWidth;
+	bool m_wordWrap{ false };
 };
 
 #endif // SYG_LABEL_H

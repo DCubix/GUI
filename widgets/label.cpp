@@ -4,7 +4,6 @@
 
 void Label::onDraw(Renderer& renderer) {
 	m_textWidth = renderer.textWidth(m_text) + 1;
-	bounds().height = 20;
 
 	auto b = realBounds();
 	int tx = 0;
@@ -22,15 +21,17 @@ void Label::onDraw(Renderer& renderer) {
 		renderer.panel(pb.x, pb.y, pb.width, pb.height);
 	}
 
-	renderer.text(b.x + 1 + tx, b.y + (b.height / 2 - 6) + 1, m_text, 0, 0, 0, 128);
-	renderer.text(b.x + tx, b.y + (b.height / 2 - 6), m_text, 255, 255, 255, 180);
+	renderer.text(b.x + tx, b.y + 1, m_text, 0, 0, 0, 128, m_wordWrap, b.x + b.width);
+	renderer.text(b.x + tx, b.y, m_text, 255, 255, 255, 180, m_wordWrap, b.x + b.width);
 
 	renderer.popClipping();
+
+	//renderer.rect(b.x, b.y, b.width, b.height, 255, 0, 0);
 }
 
 Element::Size Label::preferredSize() {
 	if (m_autoSize) {
-		return { m_textWidth, 20 };
+		return { m_textWidth, bounds().height };
 	}
 	return Widget::preferredSize();
 }
