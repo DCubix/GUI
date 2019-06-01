@@ -6,9 +6,6 @@
 
 class List : public Widget {
 public:
-	List();
-	virtual ~List();
-
 	virtual void onDraw(Renderer& renderer) override;
 	virtual void onPress(int button, int x, int y) override;
 	virtual void onScroll(int direction) override;
@@ -25,7 +22,7 @@ public:
 
 private:
 	std::function<void(int)> m_onSelected;
-	std::unique_ptr<Scroll> m_scroll;
+	Scroll* m_scroll{ nullptr };
 	std::vector<std::string> m_list;
 	int m_selected{ -1 };
 };

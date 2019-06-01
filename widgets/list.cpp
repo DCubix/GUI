@@ -15,22 +15,13 @@ static bool hitsR(int x, int y,  int bx, int by, int bw, int bh) {
 	return hits(x, y, bx, by, bw, bh);
 }
 
-List::List() {
-	m_scroll = std::make_unique<Scroll>();
-	m_scroll->step(4.0f);
-	m_scroll->orientation(Scroll::Vertical);
-	m_scroll->bounds().width = 16;
-	m_scroll->m_gui = nullptr;
-}
-
-List::~List() {
-	if (m_gui->events()) m_gui->events()->unsubscribe(m_scroll.get());
-}
-
 void List::onDraw(Renderer& renderer) {
-	if (m_scroll->m_gui == nullptr) {
-		m_scroll->m_gui = m_gui;
-		m_gui->events()->subscribe(m_scroll.get());
+	if (m_scroll == nullptr) {
+		m_scroll = m_gui->create<Scroll>();
+		m_scroll->step(4.0f);
+		m_scroll->orientation(Scroll::Vertical);
+		m_scroll->bounds().width = 16;
+		m_scroll->m_parent = this;
 	}
 
 	auto b = realBounds();
@@ -63,14 +54,15 @@ void List::onDraw(Renderer& renderer) {
 	m_scroll->minimum(0.0f);
 	m_scroll->maximum(int(ItemHeight * (m_list.size() + 1)) - b.height);
 
-	m_scroll->bounds().x = b.x + w - 1;
-	m_scroll->bounds().y = b.y;
+	m_scroll->bounds().x = w - 1;
+	m_scroll->bounds().y = 0;
 	m_scroll->bounds().height = b.height;
 	m_scroll->onDraw(renderer);
 }
 
 void List::onPress(int button, int x, int y) {
 	Widget::onPress(button, x, y);
+	if (m_scroll == nullptr) return;
 
 	auto b = realBounds();
 	int w = b.width - m_scroll->bounds().width;
@@ -86,6 +78,7 @@ void List::onPress(int button, int x, int y) {
 }
 
 void List::onScroll(int direction) {
+	if (m_scroll == nullptr) return;
 	m_scroll->onScroll(direction);
 }
 

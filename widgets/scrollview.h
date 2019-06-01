@@ -6,16 +6,13 @@
 
 class ScrollView : public Widget {
 public:
-	ScrollView();
-	virtual ~ScrollView() = default;
-
 	virtual void onDraw(Renderer& renderer) override;
 
 	Widget* widget() { return m_widget; }
 	void widget(Widget* w);
 
 private:
-	std::unique_ptr<Scroll> m_hscroll, m_vscroll;
+	Scroll *m_hscroll{ nullptr }, *m_vscroll{ nullptr };
 	Widget* m_widget{ nullptr };
 };
 
