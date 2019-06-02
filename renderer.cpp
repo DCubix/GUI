@@ -4,6 +4,9 @@
 #include <cmath>
 #include <cstdint>
 #include <sstream>
+#include <map>
+#include <locale>
+#include <codecvt>
 
 #include "skin.h"
 #include "font.h"
@@ -197,7 +200,13 @@ void Renderer::textSmall(int x, int y, const std::string& str, int r, int g, int
 }
 
 int Renderer::textWidth(const std::string& str) const {
-	return str.size() * 8;
+	std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> cvt;
+	std::u32string input = cvt.from_bytes(str.data());
+	int sz = 0;
+	for (char32_t c : input) {
+		sz += 8;
+	}
+	return sz;
 }
 
 void Renderer::skin(int x, int y, int w, int h, int sx, int sy, int sw, int sh) {
@@ -276,13 +285,42 @@ void Renderer::textGen(int font, int fw, int fh, int x, int y, const std::string
 	std::stringstream ss(str);
 	std::string item;
 
+	static const char32_t MAP[]{
+			U"ÇüéâäàåçêëèïîìÄÅÉæÆôöòûùÿÖÜ¢£¥₧ƒáíóúñÑªº¿⌐¬½¼¡«»░▒▓│"
+			"┤╡╢╖╕╣║╗╝╜╛┐└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀αßΓπΣσµτ"
+			"ΦΘΩδ∞φε∩≡±≥≤⌠⌡÷≈°∙·√ⁿ²■"
+	};
+
+	std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> cvt;
 	while (std::getline(ss, item, ' ')) {
+		std::u32string input = cvt.from_bytes(item.data());
+		std::string out{};
+		for (char32_t c : input) {
+			if (c == U'ã') {
+				out += '~';
+				out += 'a';
+			} else if (c == U'õ') {
+				out += '~';
+				out += 'o';
+			} else if (c < 128) {
+				out += uint8_t(c);
+			} else {
+				auto it = std::find(std::begin(MAP), std::end(MAP), c);
+				if (it != std::end(MAP)) {
+					out += uint8_t(std::distance(MAP, it) + 128);
+				} else {
+					out += '?';
+				}
+			}
+		}
+
 		if (ww && tx + textWidth(item) > w) {
 			tx = x;
 			ty += 13;
 		}
-		for (size_t i = 0; i < item.length(); i++) {
-			uint8_t c = uint8_t(item.at(i));
+		for (size_t i = 0; i < out.length(); i++) {
+			char chr = out.at(i);
+			uint8_t c = uint8_t(chr);
 			if (c == '\n') {
 				tx = x;
 				ty += 13;
@@ -291,7 +329,7 @@ void Renderer::textGen(int font, int fw, int fh, int x, int y, const std::string
 					putChar(font, fw, fh, tx, ty, c, r, g, b, a);
 				}
 			}
-			tx += 8;
+			if (chr != '~') tx += 8;
 		}
 		tx += 8;
 	}
