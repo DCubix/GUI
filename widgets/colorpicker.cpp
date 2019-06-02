@@ -18,7 +18,7 @@ inline static void RGB2HSV(float r, float g, float b, float &h, float &s, float 
 	}
 
 	float chroma = r - std::min(g, b);
-	h = std::fabs(K + (g - b) / (6.0f * chroma + 1e-20f));
+	h = std::fabs(K + (g - b) / (6.0f * chroma + 1e-20f)) * 360.0f;
 	s = chroma / (r + 1e-20f);
 	v = r;
 }
