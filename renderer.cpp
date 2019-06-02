@@ -248,6 +248,46 @@ void Renderer::image(int image, int x, int y, int w, int h, int sx, int sy, int 
 	nvgRestore(m_ren);
 }
 
+void Renderer::colorWheel(int x, int y, int w, int h, float value) {
+	float r0, r1, ax, ay, bx, by, cx,cy, aeps;
+	NVGpaint paint;
+
+	cx = x + w * 0.5f;
+	cy = y + h * 0.5f;
+	r1 = (w < h ? w : h) * 0.5f - 5.0f;
+	r0 = 1.0f;
+	aeps = 0.5f / r1;	// half a pixel arc length in radians (2pi cancels out).
+
+	nvgSave(m_ren);
+	for (int  i = 0; i < 6; i++) {
+		float a0 = (float)i / 6.0f * NVG_PI * 2.0f - aeps;
+		float a1 = (float)(i + 1.0f) / 6.0f * NVG_PI * 2.0f + aeps;
+		nvgBeginPath(m_ren);
+		nvgArc(m_ren, cx, cy, r0, a0, a1, NVG_CW);
+		nvgArc(m_ren, cx, cy, r1, a1, a0, NVG_CCW);
+		nvgClosePath(m_ren);
+		ax = cx + cosf(a0) * (r0+r1) * 0.5f;
+		ay = cy + sinf(a0) * (r0+r1) * 0.5f;
+		bx = cx + cosf(a1) * (r0+r1) * 0.5f;
+		by = cy + sinf(a1) * (r0+r1) * 0.5f;
+
+		float lg = (value * 0.25f) * 2.0f;
+		paint = nvgLinearGradient(m_ren, ax, ay, bx, by, nvgHSLA(a0/(NVG_PI*2),1.0f,lg,255), nvgHSLA(a1/(NVG_PI*2),1.0f,lg,255));
+		nvgFillPaint(m_ren, paint);
+		nvgFill(m_ren);
+	}
+
+	nvgBeginPath(m_ren);
+	nvgArc(m_ren, cx, cy, r1, 0, NVG_PI*2, NVG_CW);
+
+	int v = int(value * 255.0f);
+	paint = nvgRadialGradient(m_ren, cx, cy, 0.0f, r1, nvgRGBA(v, v, v, 255), nvgRGBA(v, v, v, 0));
+	nvgFillPaint(m_ren, paint);
+	nvgFill(m_ren);
+
+	nvgRestore(m_ren);
+}
+
 void Renderer::patch(int x, int y, int w, int h, int sx, int sy, int sw, int sh, int pad, int tpad) {
 	tpad = tpad < 0 ? pad : tpad;
 

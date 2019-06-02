@@ -55,6 +55,8 @@ public:
 		int r=255, int g=255, int b=255, int a=255
 	);
 
+	void colorWheel(int x, int y, int w, int h, float value);
+
 	NVGcontext* context() { return m_ren; }
 
 private:

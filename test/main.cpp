@@ -25,15 +25,12 @@ public:
 		<label text="This is supposed to be an extremely long string, to test word wrapping capabilities. Enjoy!!!" wordWrap="true" />
 		<splitview orientation="horizontal">
 			<label text="This is supposed to be an extremely long string, to test word wrapping capabilities. Enjoy!!!" wordWrap="true" />
-			<button text="Test" />
+			<colorpicker height="100"/>
 		</splitview>
 	</splitview>
 	<button text="Renderização" height="20" width="120" />
 	<check text="Check" selected="false" height="20" width="120" />
 	<spinner suffix=" Value" value="0.5" height="20" width="120" />
-	<scrollview height="180">
-		<imageview src="out.png" />
-	</scrollview>
 </root>
 )");
 	}

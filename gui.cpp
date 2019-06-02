@@ -13,6 +13,7 @@
 #include "widgets/list.h"
 #include "widgets/scrollview.h"
 #include "widgets/splitview.h"
+#include "widgets/colorpicker.h"
 
 #include "localization.h"
 
@@ -225,6 +226,8 @@ Widget* loadWidget(GUI* gui, Panel* parent, pugi::xml_node& node) {
 			}
 			((SplitView*) w)->second(secondW);
 		}
+	} else if (name == "colorpicker") {
+		w = gui->create<ColorPicker>();
 	}
 
 	if (w != nullptr) {
