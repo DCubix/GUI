@@ -6,6 +6,9 @@
 
 class List : public Widget {
 public:
+	List();
+	virtual ~List() override;
+
 	virtual void onDraw(Renderer& renderer) override;
 	virtual void onPress(int button, int x, int y) override;
 	virtual void onScroll(int direction) override;

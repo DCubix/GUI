@@ -35,7 +35,7 @@ Element::Rect Element::realBounds() const {
 
 EventHandler::Status EventHandler::poll() {
 	Status status = Running;
-	while (SDL_PollEvent(&m_event)) {
+	while (SDL_PollEvent(&m_event) && status == Running) {
 		switch (m_event.type) {
 			case SDL_QUIT: status = Quit; break;
 			case SDL_MOUSEBUTTONDOWN: {

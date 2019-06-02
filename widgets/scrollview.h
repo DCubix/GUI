@@ -6,6 +6,9 @@
 
 class ScrollView : public Widget {
 public:
+	ScrollView();
+	virtual ~ScrollView() override;
+
 	virtual void onDraw(Renderer& renderer) override;
 
 	Widget* widget() { return m_widget; }

@@ -15,13 +15,27 @@ static bool hitsR(int x, int y,  int bx, int by, int bw, int bh) {
 	return hits(x, y, bx, by, bw, bh);
 }
 
+List::List() {
+	m_scroll = new Scroll();
+	m_scroll->step(4.0f);
+	m_scroll->orientation(Scroll::Vertical);
+	m_scroll->bounds().width = 16;
+	m_scroll->m_parent = this;
+	m_scroll->m_gui = nullptr;
+}
+
+List::~List() {
+	if (m_scroll) {
+		if (m_gui->events()) m_gui->events()->unsubscribe(m_scroll);
+		delete m_scroll;
+		m_scroll = nullptr;
+	}
+}
+
 void List::onDraw(Renderer& renderer) {
-	if (m_scroll == nullptr) {
-		m_scroll = m_gui->create<Scroll>();
-		m_scroll->step(4.0f);
-		m_scroll->orientation(Scroll::Vertical);
-		m_scroll->bounds().width = 16;
-		m_scroll->m_parent = this;
+	if (m_scroll->m_gui == nullptr) {
+		m_scroll->m_gui = m_gui;
+		m_gui->events()->subscribe(m_scroll);
 	}
 
 	auto b = realBounds();
